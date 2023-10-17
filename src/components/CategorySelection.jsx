@@ -3,9 +3,7 @@ import { Link } from 'react-router-dom'
 import JournalContext from '../context'
 
 const CategorySelection = () => {
-  const { dataStore: { categories} } = useContext(JournalContext) // nested distructuring. 
-  
-
+  const { dataStore: { categories} } = useContext(JournalContext)
   return (
     <>
       <h2>Category Selection</h2>

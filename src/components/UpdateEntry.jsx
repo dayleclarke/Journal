@@ -1,4 +1,6 @@
-import React, { useState } from 'react'
+import JournalContext from '../context'
+import React, { useState, useEffect, useContext } from 'react'
+
 
 
 const UpdateEntry = ({ entry, updateEntry }) => {
@@ -9,41 +11,49 @@ const UpdateEntry = ({ entry, updateEntry }) => {
     event.preventDefault()
     updateEntry(entry._id, category, content)  
   }
+  const { dataStore: { categories} } = useContext(JournalContext)
+
   return (
-    <>
+    <div className="container">
       <hr className="hr hr-blurry" />
-      <h5>Update Entry Details for Entry {entry._id}</h5>
-      <p>Please update the fields below to reflect the changes you would like to make to the book</p>
+      <h5>Update Entry Details for Affirmation {entry._id}</h5>
+      <p>Please update the fields below to reflect the changes you would like to make to the affirmation shown above.</p>
       <section className="form">
         <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="Content">
-            Content: 
-          </label>
-          <input 
-            value={content}
-            onChange={(event) => setContent(event.target.value)}
-            type="text"
-            id="content"              
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="Category">
-            Category: 
-          </label>
-          <input 
+          <div className="form-floating">
+            <textarea 
+              value={content}
+              onChange={(event) => setContent(event.target.value)}
+              type="text"
+              id="content"              
+              required
+              className="form-control" // Add the "form-control" class for Bootstrap styling
+              rows="5"
+            ></textarea>
+            <label htmlFor="Content" className="form-label">
+              Content: 
+            </label>
+          </div>
+        <div className="form-floating">
+          <select  className="form-select"
             value={category}
             onChange={(event) => setCategory(event.target.value)}
-            type="text"
             id="category"              
             required
-          />
+          >
+            {categories.map((category) => (
+              <option key={category.name} value={category.name}>
+                {category.name}
+              </option>
+            ))}
+          </select>
+          <label htmlFor="Category" className="form-label">Category:</label>
+
         </div>
         <button className="btn btn-primary mt-3">Update Entry Details</button>
         </form>
       </section>
-    </>
+    </div>
   )
 }
 

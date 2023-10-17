@@ -8,12 +8,13 @@ import ShowEntry from './ShowEntry'
 import { Routes, Route, useParams, useNavigate } from 'react-router-dom'
 import reducer from '../reducer'
 import JournalContext from '../context'
+import Footer from "./Footer"
 
-const initialState = { // Here we are setting the initial state for both entries and categories to be empty arrays
+
+const initialState = { 
   entries: [],
   categories: []
 }
-
 
 const App = () => {
   
@@ -51,50 +52,35 @@ const App = () => {
   const ShowEntryWrapper = ()=> { // Create a child component to wrap the ShowEntry component which allows additional functionality to happen before and/or after the component is rendered. It allows us to extract the id from the url to access the entry from the entries array. HOC's can also be used to add error handling. That way we avoid modifying the component itself which makes it more reusable. 
       const { id } = useParams() // We use the useParams hook to access the entryID from the URL. useParams()  returns an object that contains the key-value pairs of all the URL parameters in the current route. { id } is using destructuring assignment to extract a specific property (in this case, id) from the object returned by useParams().
       const current_entry = entries.find(entry => entry._id === id);
-      return current_entry ?  <ShowEntry entry={current_entry} /> : <h4>Entry not found</h4> // If the entry exists render the entry component. Otherwise display a message indicating the entry was not found. 
-      // return current_entry ?  <ShowEntry entry={current_entry} deleteEntry={deleteEntry} updateEntry={updateEntry} /> : <h4>Entry not found</h4> // If the entry exists render the entry component. Otherwise display a message indicating the entry was not found. 
+      return current_entry ?  <ShowEntry entry={current_entry} updateEntry={updateEntry} /> : <h4>Entry not found</h4>
   }
+    const updateEntry = async (entryId, category, content) => {
+      const updatedEntry = {
+        category: category, 
+        content: content  
+      }
+      try {
+        const returnedEntry= await fetch(`http://localhost:4001/entries/${entryId}`, {
+          method: 'PUT',
+          headers: {
+            Accept: 'application/json',
+            "Content-Type": 'application/json'
+          },
+          body: JSON.stringify(updatedEntry)
+        });
+        const data = await returnedEntry.json()
+        // const otherEntries = entries.filter((entry) => entry._id !== entryId);
+        dispatch({
+          type: 'updateEntry',
+          updatedEntry: data
+        }) 
+        //setEntries(...otherEntries, data);
+        nav(`/entry/${data._id}`)
 
-  // const deleteEntry = async (entryId) => {
-  //     try {
-  //       await fetch(`http://localhost:4001/entries/${entryId}`, {
-  //         method: 'DELETE',
-  //         headers: {
-  //           Accept: 'application/json',
-  //         },
-  //       });
-
-  //     } catch (error) {
-  //       console.error('Error deleting entry', error);
-  //     }
-  //     const updatedEntries = entries.filter((entry) => entry._id !== entryId);
-  //     setEntries(updatedEntries);
-  //     nav(`/entry/${entryId}`)
-  //   };
-
-    // const updateEntry = async (entryId, category, content) => {
-    //   const updatedEntry = {
-    //     category: category, 
-    //     content: content  
-    //   }
-    //   try {
-    //     const returnedEntry= await fetch(`http://localhost:4001/entries/${entryId}`, {
-    //       method: 'PUT',
-    //       headers: {
-    //         Accept: 'application/json',
-    //         "Content-Type": 'application/json'
-    //       },
-    //       body: JSON.stringify(updatedEntry)
-    //     });
-    //     const data = await returnedEntry.json()
-    //     const otherEntries = entries.filter((entry) => entry._id !== entryId);
-    //     setEntries(...otherEntries, data);
-    //     nav(`/`) 
-
-    //   } catch (error) {
-    //     console.error('Error updating entry', error);
-    //   }
-    // };
+      } catch (error) {
+        console.error('Error updating entry', error);
+      }
+    };
   const addEntry = async (category, content) => { // A regular function that will add a new entry to the array. 
     // Add new entry
     const newEntry = {
@@ -116,11 +102,9 @@ const App = () => {
     dispatch({
       type: 'addEntry',
       newEntry: data
-  }) // This triggers a call to the reducer function, React automatically passes in the current state as an implicit parameter and the second object (with type and newEntry) here as the action.
+    }) // This triggers a call to the reducer function, React automatically passes in the current state as an implicit parameter and the second object (with type and newEntry) here as the action.
     nav(`/entry/${data._id}`) // Here I call nav and pass it the URL I want to navigate to. ID is the parameter I defined in line 11. 
   }
-// // React components must return JSX and cannot return siblings. Everything must be returned with a parent (e.g. wrapped in a fragment or a div). A fragment <> </> can be used to group the elements without creating a DOM element. It's like an anonymous tag. It doesn't render anything to the DOM it is just used to satisfy Reacts requirement that there is only one root node.
-// Front end and back end routes are not the same. 
   return (
     <JournalContext.Provider value={{dataStore, dispatch}}>
         <NavBar />
@@ -131,6 +115,7 @@ const App = () => {
           <Route path='/new/:category' element={<NewEntry addEntry={addEntry} />} />
           <Route path='*' element= {<h4>Page not found!</h4>} />
         </Routes>
+        <Footer />
     </JournalContext.Provider>
   )
 }
