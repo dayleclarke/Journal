@@ -12,7 +12,7 @@ const NewEntry = ({ addEntry }) => {
   return (
     <div className="container">
       <h2>New entry in the {category} category</h2> 
-      <form noValidate onSubmit={submit}>
+      <form onSubmit={submit}>
         <div>
           <textarea value={entry} onChange={(event) => setEntry(event.target.value)} rows="10" className='form-control' required></textarea>
         </div>

@@ -1,10 +1,14 @@
 
 import React, { useEffect, useReducer } from 'react'
 import NavBar from './NavBar'
+import Header from './Header'
+
 import Home from './Home'
 import CategorySelection from './CategorySelection'
 import NewEntry from './NewEntry'
 import ShowEntry from './ShowEntry'
+import Register from './Register'
+
 import { Routes, Route, useParams, useNavigate } from 'react-router-dom'
 import reducer from '../reducer'
 import JournalContext from '../context'
@@ -108,8 +112,10 @@ const App = () => {
   return (
     <JournalContext.Provider value={{dataStore, dispatch}}>
         <NavBar />
+        <Header />
         <Routes>
           <Route path='/' element={<Home />}/>
+          <Route path="/register" element={<Register />} />
           <Route path='/category' element={<CategorySelection />} />
           <Route path='/entry/:id' element={<ShowEntryWrapper />} /> 
           <Route path='/new/:category' element={<NewEntry addEntry={addEntry} />} />

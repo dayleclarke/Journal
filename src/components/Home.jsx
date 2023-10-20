@@ -10,8 +10,7 @@ const Home = () => {
 
   return (
     <div className="container">
-      <h2>Journal Entries</h2>
-      <h3>Affirmations</h3>
+      <h2>Affirmations</h2>
       <div className="row row-cols-1 row-cols-lg-2">
       {categories.length ? (
         categories.map((category) => (
