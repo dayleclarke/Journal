@@ -3,20 +3,20 @@ import React, { useState, useEffect, useContext } from 'react'
 
 
 
-const UpdateEntry = ({ entry, updateEntry }) => {
-  const [content, setContent] = useState(`${entry.content}`)
-  const [category, setCategory] = useState(`${entry.category.name}`)
+const UpdateAffirmation = ({ affirmation, updateAffirmation }) => {
+  const [content, setContent] = useState(`${affirmation.content}`)
+  const [category, setCategory] = useState(`${affirmation.category.name}`)
 
   function handleSubmit(event){
     event.preventDefault()
-    updateEntry(entry._id, category, content)  
+    updateAffirmation(affirmation._id, category, content)  
   }
   const { dataStore: { categories} } = useContext(JournalContext)
 
   return (
     <div className="container">
       <hr className="hr hr-blurry" />
-      <h5>Update Entry Details for Affirmation {entry._id}</h5>
+      <h5>Update Affirmation Details for Affirmation {affirmation._id}</h5>
       <p>Please update the fields below to reflect the changes you would like to make to the affirmation shown above.</p>
       <section className="form">
         <form onSubmit={handleSubmit}>
@@ -50,11 +50,11 @@ const UpdateEntry = ({ entry, updateEntry }) => {
           <label htmlFor="Category" className="form-label">Category:</label>
 
         </div>
-        <button className="btn btn-primary mt-3">Update Entry Details</button>
+        <button className="btn btn-primary mt-3">Update Affirmation Details</button>
         </form>
       </section>
     </div>
   )
 }
 
-export default UpdateEntry
+export default UpdateAffirmation

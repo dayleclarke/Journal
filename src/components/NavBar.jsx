@@ -21,18 +21,23 @@ const NavBar = () => {
               </Link>
             </li>
             <li className="nav-item">
+              <Link className="nav-link text-light" to="/affirmations"><FaPalette className= "m-2"/>
+                Affirmations
+              </Link>
+            </li>
+            <li className="nav-item">
               <Link className="nav-link text-light" to="/category"><FaSun className= "m-2"/>
                 Select Category
               </Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link text-light" to="/entry/0"><FaPalette className= "m-2"/>
-                First Entry
+              <Link className="nav-link text-light" to="/register"><FaUser className= "m-2"/>
+                Register
               </Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link text-light" to="/register"><FaUser className= "m-2"/>
-                Register
+              <Link className="nav-link text-light" to="/login"><FaUser className= "m-2"/>
+                Login
               </Link>
             </li>
           </ul>

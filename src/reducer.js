@@ -1,25 +1,25 @@
 export default function reducer(state, action) { 
   switch (action.type) { 
-    case 'setEntries': 
+    case 'setAffirmations': 
     return { 
       ...state, 
-      entries: action.entries,
+      affirmations: action.affirmations,
     }
-    case 'addEntry': 
+    case 'addAffirmation': 
       return { 
         ...state, 
-        entries: [...state.entries, action.newEntry] 
+        affirmations: [...state.affirmations, action.newAffirmation] 
       }
-    case 'deleteEntry': 
+    case 'deleteAffirmation': 
       return { 
         ...state, 
-        entries: state.entries.filter((entry) => entry._id !== action.entryID) 
+        affirmations: state.affirmations.filter((affirmation) => affirmation._id !== action.affirmationID) 
       }
-    case 'updateEntry': 
+    case 'updateAffirmation': 
       return { 
         ...state, 
-        entries: state.entries.map((entry) => 
-          entry._id === action.updatedEntry._id ? action.updatedEntry : entry
+        affirmations: state.affirmations.map((affirmation) => 
+          affirmation._id === action.updatedAffirmation._id ? action.updatedAffirmation : affirmation
         ),
       }
     case 'setCategories':
