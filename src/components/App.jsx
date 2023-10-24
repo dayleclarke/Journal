@@ -11,7 +11,7 @@ import NewAffirmation from './NewAffirmation'
 import ShowAffirmation from './ShowAffirmation'
 import Register from './Register'
 import Login from './Login'
-
+import RequireAuth from './RequireAuth'
 import { Routes, Route, useParams, useNavigate } from 'react-router-dom'
 import reducer from '../reducer'
 import JournalContext from '../context'
@@ -120,8 +120,10 @@ const App = () => {
           <Route path='/' element={<Home />}/>
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
-          <Route path='/affirmations' element={<Affirmations />}/>
-          <Route path='/category' element={<CategorySelection />} />
+          <Route element={<RequireAuth />}>
+            <Route path='/affirmations' element={<Affirmations />}/>
+            <Route path='/category' element={<CategorySelection />} />
+          </Route>
           <Route path='/affirmation/:id' element={<ShowAffirmationWrapper />} /> 
           <Route path='/new/:category' element={<NewAffirmation addAffirmation={addAffirmation} />} />
           <Route path='*' element= {<h4>Page not found!</h4>} />
